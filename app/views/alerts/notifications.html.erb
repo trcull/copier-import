@@ -1,0 +1,15 @@
+<% if @alerts.length > 0 %>
+    <% @alerts.each do |alert| %>
+      <li id="<%= "row-#{alert.id}" %>">
+        <div style="display:block;"><span class="notification-message <%= level_class(alert) %> <%= "level_#{alert.level}" %>">
+        	<%= link_to(truncate(alert.message, :length => 25), alerts_path) %>
+        	
+<!-- commenting out until I can figure out how to display it right
+	<a onclick="acknowledgeAlert(<%= alert.id %>)">X</a>        	
+-->	</span>
+        </div>
+      </li>
+    <% end %>
+<% else %>
+<li><a href="#" onclick="false">No Alerts</a></li>
+<% end %>

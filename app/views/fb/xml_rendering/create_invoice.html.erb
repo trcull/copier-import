@@ -1,0 +1,17 @@
+<request method="invoice.create">  
+  <invoice>  
+    <!-- Client being invoiced -->  
+    <client_id><%= client_id %></client_id>  
+    <lines>     <!-- Specify one or more line elements (Optional) -->
+    	<% lines.each do |line|%>  
+      <line>  
+        <name>Copies</name>                       <!-- (Optional) -->  
+        <description><%=line[:description]%></description>   <!-- (Optional) -->  
+        <unit_cost><%=line[:unit_price]%></unit_cost>                    <!-- Default is 0 -->  
+        <quantity><%=line[:qty]%></quantity>                       <!-- Default is 0 -->  
+        <type>Item</type>                            <!-- (Optional) -->  
+      </line>  
+      <% end%>
+    </lines>  
+  </invoice>  
+</request> 

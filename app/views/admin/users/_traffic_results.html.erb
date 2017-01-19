@@ -1,0 +1,53 @@
+<h3>Recent Pageviews</h3>
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-hover table-responsive sortable">
+		<thead>
+			<tr>
+				<th>Visitor ID</th>
+				<th>Timestamp</th>
+				<th>Category</th>
+				<th>Action</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% events.each do |pv| %>
+				<tr>
+					<td width="60">(<%= link_to 'f', "/admin/traffic?start_dt=#{pretty_dt(start_dt)}&end_dt=#{pretty_dt(end_dt)}&visitor_id=#{pv.visitor_id}"%>)
+						<%= pv.visitor_id %></td>						
+					<td><%= pv.created_at.strftime("%m-%d / %H:%M:%S") %></td>						
+					<td><%= pv.category %></td>						
+					<td><%= pv.action %></td>						
+					<td><%= pv.name %></td>						
+				</tr>
+			<% end %>
+		</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-hover table-responsive sortable">
+			<thead><tr>
+				<th>Visitor ID</th>
+				<th>Timestamp</th>
+				<th>Url</th>
+				<th>Ref</th>
+			</tr></thead>
+			<tbody>
+			<% pageviews.each do |pv| %>
+				<tr>
+					<td width="60">(<%= link_to 'f', "/admin/traffic?start_dt=#{pretty_dt(start_dt)}&end_dt=#{pretty_dt(end_dt)}&visitor_id=#{pv.visitor_id}"%>)
+						<%= pv.visitor_id %></td>						
+					<td width="20"><%= pv.created_at.strftime("%m-%d / %H:%M:%S") %></td>						
+					<td class="url-table-cell"><span><%= pv.url %></span></td>						
+					<td class="url-table-cell"><span><%= pv.urlref %></span></td>						
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

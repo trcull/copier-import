@@ -1,0 +1,25 @@
+
+<div class="row content-row">
+	<div class="col-md-12">
+	  <h1>Alerts</h1>
+	</div>
+</div>
+
+<div class="row content-row">
+	<div class="col-md-12">
+<% if @alerts.length > 0 %>
+    <% @alerts.each do |alert| %>
+<div class="alert <%= level_class(alert) %> alert-dismissible" role="alert" id="alert-<%= alert.id %>">
+  <button type="button" class="close" onclick="acknowledgeAlert(<%= alert.id %>)">
+  	<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+  </button>
+  <%= alert.message %>
+  created at <%= alert.created_at %>
+</div>
+    <% end %>
+
+<% else %>
+<p>No Alerts</p>
+<% end %>
+	</div>
+</div>

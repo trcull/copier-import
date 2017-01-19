@@ -1,0 +1,53 @@
+
+<div class="row">
+	<div class="col-md-6">
+	<h3>Your Account</h3>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+
+  <div><%= f.label :email %><br />
+  <%= f.email_field :email, :autofocus => true, :class=>'form-control' %></div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+	<div><a style="font-size:0.6em;" href="#" onClick="$('#change_password').toggle();return false;">Change password...</a></div>
+	<div style="display:none;" id="change_password">
+  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+  <%= f.password_field :password, :autocomplete => "off", :class=>'form-control' %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation, :class=>'form-control' %></div>
+	</div>
+  <div><%= f.label :current_password %> <i>(to confirm your changes)</i><br />
+  <%= f.password_field :current_password, :class=>'form-control' %></div>
+
+  <p style="margin-top:10px;">You are on the <%= current_user.plan_names %> plan.  <a href="/splash/plans_and_pricing">Change plan...</a></p>
+  <div style="margin-top:10px;"><%= f.submit "Update", :class=>'form-control btn btn-primary' %></div>
+<% end %>
+	</div>
+</div>
+
+<div class="row">
+	<h3>Your Store(s)</h3>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Site Tracking Key</th>
+		</tr>
+	<% resource.organizations.each do |org|%>
+		<tr>
+			<td><a href="/organizations/<%=org.id%>/edit"><%=org.name%></a></td>
+			<td><%=org.tracking_site_id%></td>
+		</tr>
+	<% end %>
+	</table>
+</div>	
+
+
+	
+<div style="margin-top:100px;" class="row">
+	<div class="col-md-3">
+<p style="margin-top: 20px;">Unhappy? <%= link_to "Cancel my account", "mailto:support@retentionfactory.com?subject=Please+Cancel+My+Account&body=User+#{current_user.id}+with+email+#{CGI::escape(current_user.email)}", :class=>'form-control btn btn-default'%></p>
+</div>
+</div>

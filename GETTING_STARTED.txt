@@ -1,0 +1,67 @@
+GETTING_STARTED
+
+* Install Git
+
+* Install Ruby/RVM
+
+* Install Postgres
+- If you have postgres root password problems
+http://linuxadminzone.com/recover-or-reset-root-password-of-mysql-and-postgresql-servers/
+
+- Be sure to escape any $ signs in your strings with a backslash
+
+see: http://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
+#these might be optional
+sudo adduser rfengine
+sudo passwd rfengine
+psql -U postgres -c "DROP USER rfengine"
+psql -U postgres -c "CREATE USER rfengine with createdb password 'fightchurn'"
+
+* Make sure the pg gem installs correctly "gem install pg"
+you'll have to manually specify the pg_config as described here:
+http://stackoverflow.com/questions/19625487/impossible-to-install-pg-gem-on-my-mac-with-mavericks
+
+eg like this:
+"gem install pg -- --with-pg-config=/Library/PostgreSQL/9.3/bin/pg_config"
+
+
+* Run 'bundle install'
+
+* Run 'bundle exec rake db:create RAILS_ENV=test' and 'bundle exec rake db:create RAILS_ENV=development'
+
+* Run 'bundle exec rake db:migrate RAILS_ENV=test' and 'bundle exec rake db:migrate RAILS_ENV=development'
+
+* Run 'bundle exec rake db:seed RAILS_ENV=development'
+
+* Run 'bundle exec rake'
+  
+* Install Aptana Studio 3
+
+* Install heroku toolbelt (https://toolbelt.heroku.com/osx)
+
+* make sure you get a .env file with all the developer keys, etc from Tim
+
+* make sure you get an "ssl-cert" folder from Tim
+
+* make sure you have a curl_cacert.pem file in /config
+
+* Connect with heroku
+https://devcenter.heroku.com/articles/keys
+git remote add heroku git@heroku.com:retention-factory-engine.git
+
+http://stackoverflow.com/questions/2786062/how-can-i-pull-an-existing-heroku-app-to-new-location-for-development
+
+
+
+
+try starting local:
+./dev-start.sh
+
+if you get this error:
+/Users/trcull/.rvm/gems/ruby-2.1.2/gems/activerecord-4.1.1/lib/active_record/connection_adapters/postgresql_adapter.rb:881:in `initialize': could not connect to server: No such file or directory (PG::ConnectionBad)
+	Is the server running locally and accepting
+	connections on Unix domain socket "/var/pgsql_socket/.s.PGSQL.5432"?
+
+you might need this: http://tammersaleh.com/posts/installing-postgresql-for-rails-3-1-on-lion/
+or this: http://dba.stackexchange.com/questions/21587/postgresql-is-running-locally-but-i-cannot-connect-why
+

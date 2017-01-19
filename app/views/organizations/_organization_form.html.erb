@@ -1,0 +1,245 @@
+
+<% content_for :javascript_includes  do %>
+<script src="https://s3.amazonaws.com/fv-assets/angular/angular.min.js"></script>
+    <%= javascript_include_tag "edit_organization" %>
+<% end %>
+
+<div id="EditOrganizationDiv" ng-app="App" ng-controller="EditOrganizationCtrl" ng-init="init(<%= org.to_json %>,'<%= org.type %>',<%= org.admin_user.to_json %>)">
+<%= form_for org, url: {action: 'update'} do |f|%>
+
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :name %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :name, {'ng-model'=>'org.name','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :store_url, "Store URL" %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :store_url, {'ng-change'=>'storeUrlChanged()', 'ng-model'=>'org.store_url','class'=>'form-control','placeholder'=>'yourstore.com'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :currency %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<select name="organizationCurrencySelector" ng-change="currencyChanged()" ng-model="org.currency" ng-options="val for val in allowableCurrencies" class="form-control select select-primary">
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :store_type, 'Store Type' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<select name="organizationStoreTypeSelector" ng-change="storeTypeChanged()" ng-model="org.store_type" ng-options="val for val in allowableStoreTypes"  class="form-control select select-primary">
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :email, 'Customer Email (public facing)' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :email, {'ng-model'=>'org.email','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :account_email, 'Admin Email (for us)' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :account_email, {'ng-model'=>'org.account_email','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :address %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :address, {'ng-model'=>'org.address','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :city %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :city, {'ng-model'=>'org.city','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :country %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :country, {'ng-model'=>'org.country','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :phone %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :phone, {'ng-model'=>'org.phone','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :state %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :state, {'ng-model'=>'org.state','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :postal_code %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :postal_code, {'ng-model'=>'org.postal_code','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<% if current_user.can?(:configure_system) %>
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :type %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<select name="organizationTypeSelector" ng-model="org.type"  ng-options="val for val in allowableTypes"  class="form-control select select-primary">
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :timezone %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :timezone, {'ng-model'=>'org.timezone','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :logo_url, 'Logo URL' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :logo_url, {'ng-model'=>'org.logo_url','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :alt_image_1_url, 'Alt Logo URL' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :alt_image_1_url, {'ng-model'=>'org.alt_image_1_url','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :currency_template_text , 'Currency Template (Plain Text)' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :currency_template_text, {'ng-model'=>'org.currency_template_text','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :currency_template_html, 'Currency Template (Html)' %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<%= f.text_field :currency_template_html, {'ng-model'=>'org.currency_template_html','class'=>'form-control'} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :is_installed %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<input name="organization[is_installed]" type="checkbox" ng-model="org.is_installed" />
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+	<%= f.label :is_active %>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<input name="organization[is_active]" type="checkbox" ng-model="org.is_active"/>
+		</div>
+	</div>
+</div>
+
+<% end %>
+
+<div class="row">
+	<div class="col-md-2">
+		<a ng-click="save()" class="btn btn-primary btn-lg form-control">Save</a> 
+	</div>
+</div>
+
+
+<% end %>
+</div>

@@ -1,0 +1,5 @@
+set up a freshbooks developer account and set the api token for it in .env
+set up an Amazon AWS account and set the api tokens for it in .env
+test that creating a database from scratch works
+
+

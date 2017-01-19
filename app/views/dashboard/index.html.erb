@@ -1,0 +1,200 @@
+
+<div id="dashboard-stats">
+	<% if @show_orders_from_contacts %>
+	<div class="row dashboard-headline-row">
+		<h3>Business We've Won</h3> 
+		<a href="/ecomm/<%=current_user.current_organization.id%>/orders_from_contacts">
+					<span class="fui-exit"></span>
+	<span class="hidden">more...</span></a>
+	</div>
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>All Time</h4>
+			<p style="font-size:2.0em;"><%= @org_stat.organization.to_currency_html(@org_stat.rf_sales_dollars_to_date) %></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>30 Days</h4>
+			<p style="font-size:2.0em;"><%=@org_stat.organization.to_currency_html( @org_stat.rf_sales_dollars_this_month)%></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>7 Days</h4>
+			<p style="font-size:2.0em;"><%=@org_stat.organization.to_currency_html( @org_stat.rf_sales_dollars_this_week) %></p>
+			</div>
+		</div>
+	</div>
+	
+	
+	<% end %>
+	
+	<% if @show_recently_contacted %>
+	<div class="row dashboard-headline-row">
+		<h3>Recently Contacted Customers</h3> 
+		<a href="/ecomm/<%=current_user.current_organization.id%>/recently_contacted">
+					<span class="fui-exit"></span>
+	<span class="hidden">more...</span></a>
+	</div>
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Total Emails Sent</h4>
+			<p style="font-size:2.0em;"><%=pretty_int @org_stat.email_sent_count_to_date %></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>30 Days</h4>
+			<p style="font-size:2.0em;"><%=pretty_int @org_stat.email_sent_count_this_month %></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>7 Days</h4>
+			<p style="font-size:2.0em;"><%=pretty_int @org_stat.email_sent_count_this_week %></p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Open Rate</h4>
+			<p style="font-size:2.0em;"><%=as_pct (@org_stat.email_opens_count_to_date.to_f/@org_stat.email_sent_count_to_date) %></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Click Rate</h4>
+			<p style="font-size:2.0em;"><%=as_pct (@org_stat.email_clicks_count_to_date.to_f/@org_stat.email_sent_count_to_date) %></p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Sale Rate</h4>
+			<p style="font-size:2.0em;"><%=as_pct (@org_stat.email_sales_count_to_date.to_f/@org_stat.email_sent_count_to_date) %></p>
+			</div>
+		</div>
+	</div>
+	
+	<% end %>
+	
+	<div class="row dashboard-headline-row">
+		<h3>Repeat Purchase Rates</h3> 
+		<a href="/ecomm/<%=current_user.current_organization.id%>/repeat_purchase_rates">
+			<span class="fui-exit"></span>
+			<span class="hidden">more...</span>
+		</a>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-6 text-center">
+			<div>
+			<h4>All Time</h4>
+			<p style="font-size:2.0em;"><%= as_pct @summary_stat.repeat_rate_all_time %></p>
+			</div>
+		</div>
+		<div class="col-md-6 text-center">
+			<div>
+			<h4>Recently</h4>
+			<p style="font-size:2.0em;"><%= as_pct @summary_stat.repeat_rate_long_term %></p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row dashboard-headline-row">
+		<h3>Most Repeat Purchases Occur Within X Days...</h3> 
+		<a href="/ecomm/<%=current_user.current_organization.id%>/repeat_purchase_ages">
+					<span class="fui-exit"></span>
+	<span class="hidden">more...</span></a>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Average</h4>
+			<p style="font-size:2.0em;"><%=pretty_num @summary_stat.repeat_within_avg_days%> days</p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Most Customers</h4>
+			<p style="font-size:2.0em;"><%=pretty_or_zero(@summary_stat.repeat_within_dev(-1))%> - <%=pretty_num(@summary_stat.repeat_within_dev(1))%> days</p>
+			</div>
+		</div>
+		<div class="col-md-4 text-center">
+			<div>
+			<h4>Max</h4>
+			<p style="font-size:2.0em;"><%=pretty_num @summary_stat.repeat_within_max%> days</p>
+			</div>
+		</div>
+		
+	</div>
+	
+	
+	
+	<div class="row dashboard-headline-row">
+		<h3>Your Recent <%= @recent_repeats.length %> Repeat Purchases</h3> 
+		<a href="/ecomm/<%=current_user.current_organization.id%>/recent_repeat_purchases">
+					<span class="fui-exit"></span>
+	<span class="hidden">more...</span></a>
+	</div>
+	<% if @recent_repeats.length > 0 %>
+	<div class="row">
+	<div class="table-responsive">
+		        	<table class="table table-striped table-hover">
+		            <thead>
+		              <tr>
+		                <th>Name</th>
+		                <th>Customer Age<br/>(Days)</th>
+		                <th>Product(s)</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+		            <% @recent_repeats.each do |order| %>
+		              <tr>
+		                <td><%= order.customer.description %></td>
+		                <td><%= order.customer_age %></td>
+		                <td><%= order.order_lines.collect{|ol| ol.product.description}.join(', ')%></td>
+		              </tr>
+		            <% end %>
+		            </tbody>
+		          </table>
+	        	</div>	
+	</div>
+	<% else %>
+	<div class="row">
+		Oops, looks like we don't have any data for you.  That's probably because we are still downloading it in the background.  If it's been a few hours and you're still seeing this message, please contact us at support@retentionfactory.com so we can check it out.
+	</div>
+	<% end %>
+</div>
+
+<div id="still-downloading">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Looks like you're new here</h3>
+			<p>
+				We're still downloading your order data in the background and 
+				calculating your statistics.  So far we're up to 
+				<%= current_user.current_organization.num(@order_count_so_far) %> orders and counting...
+			</p>
+			<p>
+				While you're waiting, how about setting up some <a href="/messages/preferences">messages</a>? 
+			</p><p> 
+				Or, <a href="/splash/plans_and_pricing">pick a plan</a> to make sure you get continuous service
+				without interruption when your free trial ends. 
+			</p>
+		</div>
+	</div>
+</div>
+
+<% if @show_orders_still_downloading %>
+<script type="text/javascript">
+	$(document).ready( function() {
+		$('#still-downloading').show();
+		$('#dashboard-stats').hide();
+	});
+</script>
+<% end %>

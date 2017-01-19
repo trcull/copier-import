@@ -1,0 +1,100 @@
+<div class="row">
+	<h2>Create a no-obligation account</h2>
+<p>You're seconds away from realizing more revenue from customers you already have.</p>
+</div>
+<div class="row">
+	<div class="col-md-4 choose-form">
+		<div class="step1">
+			<p>I am a...</p>
+			<p>
+				<a class="btn btn-primary btn-lg form-control" onclick="startNewUser();return false;">New User</a>
+				<a class="btn btn-primary btn-lg form-control" onclick="startReturningUser();return false;">Returning User</a>
+			</p>
+		</div>	
+	</div>
+	
+	<div class="col-md-4 sign-in-form">
+		<div class="step1">
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html=>{:id=>'sign-in-form'}) do |f| %>
+		  <div>
+		  <%= f.email_field :email, :placeholder=>'Email', :autofocus => true, :class=>'form-control' %>
+		  </div>
+		
+		  <div>
+		  <%= f.password_field :password, :placeholder=>'Password', :class=>'form-control' %>
+		  </div>
+		
+		  <% if devise_mapping.rememberable? %>
+			  <div class="tos form-group">
+			  	<label class="checkbox" for="remember_me">
+		  		  <%= f.check_box :remember_me, 'data-toggle'=>'checkbox',:class=>'form-control' %> <%= f.label :remember_me %>
+			  	</label>
+			  </div>
+		  <% end %>
+		
+	        <%= f.submit "Sign In", {class: "btn btn-primary btn-lg form-control"}%>
+		<% end %>        
+		<div style="margin-left:20px;margin-top:40px;" class="row">
+			<p>Don't have a Retention Factory account?  <a onclick="startNewUser();return false;" href="#">Sign up</a></p>
+		</div>
+
+		</div>
+	</div>
+
+	<div class="col-md-4 sign-up-form">
+	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html=>{:id=>'sign-up-form'}) do |f| %>
+	<div class="step1">
+	  <div class="form-group">
+	  <%= f.email_field :email, :placeholder=>'Email',:autofocus => true, :class=>'form-control' %></div>
+	
+	  <div class="form-group">
+	  <%= f.password_field :password , :placeholder=>'Password', :class=>'form-control'%></div>
+	
+	  <div class="form-group">
+	  <%= f.password_field :password_confirmation, :placeholder=>'Confirm Password',:class=>'form-control' %></div>
+
+	  <div style="margin-top:15px;"><a href="#" onclick="signupStepTwo(); return false;" class='btn btn-primary form-control'>Next</a></div>
+	</div>  
+	<div class="step2">
+	  <div class="form-group">
+	  <%= f.text_field :new_organization_name, :placeholder=>"Company Name, e.g. Acme Co.", :class=>'form-control' %></div>
+		
+	  <div class="form-group">
+	  <%= f.text_field :new_store_url, :placeholder=>'Store URL, e.g. https://mystore.com', :class=>'form-control' %></div>
+	
+	  <div class="form-group">
+	  	<%= f.label :new_store_type, "What type of store?..."%>
+	  <select name="user[new_store_type]" class='form-control select select-primary'>
+	     <option value="<%= Organization::STORE_TYPE_MANUAL %>">Other Type of Store</option>
+	     <option value="<%= Organization::STORE_TYPE_SHOPIFY %>">Shopify Store</option>
+	  </select>
+	  </div>
+
+	  <div class="tos form-group">
+	  	<label class="checkbox" for="accept_terms">
+	  	<%= f.check_box :accept_terms, value: 't', 'data-toggle' => 'checkbox', :class=>'form-control' %>
+	  	I accept the Retention Factory <a href="http://www.retentionfactory.com/tos">terms and conditions</a>
+	  	 and <a href="http://www.retentionfactory.com/privacy-policy">privacy policy</a>
+	  	</label>
+	  </div>
+	  <div style="margin-top:15px;">
+	  <a href="#" onclick="signupSubmit(); return false;" class='btn btn-primary form-control'>Sign up</a>
+	  <br/>
+	  <a href="#" onclick="startNewUser(); return false;">back</a>
+	  </div>
+	</div>
+	<% end %>
+
+	<div style="margin-left:20px;margin-top:40px;" class="row">
+		<p>Already have a Retention Factory account?  <a onclick="startReturningUser();return false;" href="#">Sign in</a></p>
+	</div>
+
+	</div>
+
+
+	<div class="col-md-8">
+		<img class="marketing-image" src="https://s3.amazonaws.com/fv-assets/images/Fotolia_44518393_M.jpg" alt="marketing image"/>
+	</div>
+</div>
+
+

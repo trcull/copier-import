@@ -1,0 +1,13 @@
+
+.dashboard-headline-row h3 {
+	display:inline-block;
+}
+
+.dashboard-headline-row a {
+	display:inline;
+	margin-left:10px;
+}
+
+#still-downloading {
+	display:none;
+}

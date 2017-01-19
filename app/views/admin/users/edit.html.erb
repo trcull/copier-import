@@ -1,0 +1,89 @@
+
+<div class="row">
+	<h3>User</h3>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+		<p><%=@user.id%> &nbsp;<a href="mailto:<%=@user.email%>"><%=@user.email%></a></p>
+	</div>
+	<div class="col-md-4">
+		<p>Plan: <%=@user.plan_names%></p>	
+	</div>
+	<div class="col-md-4">
+	</div>
+</div>
+
+<div class="row">
+	<h3>Organizations</h3>
+</div>
+
+<% @user.organizations.each do |org|%>
+<div class="row">
+	<div class="col-md-3">
+		<p><a href="/organizations/#{org.id}"><%=org.to_log%></a></p>	
+	</div>
+	<div class="col-md-3">
+		<p><a href="http://<%=org.store_url%>"><%=org.store_url%></a></p>	
+	</div>
+	<div class="col-md-3">
+		<p>Org Type <%= org.class.name %> / <%= org.store_type %></p>
+	</div>
+	<div class="col-md-3">
+		<p>Tracking site id: <%=org.tracking_site_id%></p>	
+	</div>		
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+	<table class="table table-striped">
+			<tr>
+				<th>Value</th>
+				<th>Measure</th>
+			</tr>
+			<% stat = org.latest_stat %>
+			<tr><td>Products</td><td class="text-right"><%=org.num(org.num_products) %></td></tr>
+			<% if stat %>
+			<tr><td>30 Day Orders</td><td class="text-right"><%=org.num(stat.all_sales_count_this_month) %></td></tr>
+			<tr><td>All Time Orders</td><td class="text-right"><%=org.num(stat.all_sales_count_to_date) %></td></tr>
+			<tr><td>30 Day Emails Sent</td><td class="text-right"><%=org.num(stat.email_sent_count_this_month) %></td></tr>
+			<tr><td>All Time Emails Sent</td><td class="text-right"><%=org.num(stat.email_sent_count_to_date) %></td></tr>
+			<% end %>
+			<tr><td>30 Day Won Revenue</td><td class="text-right"><%=org.to_currency_html(org.revenue_from_contacts_30_days)%></td></tr>
+			<tr><td>All Time Won Revenue</td><td class="text-right"><%=org.to_currency_html(org.revenue_from_contacts_all_time)%></td></tr>
+			<tr><td>30 Day Total Revenue</td><td class="text-right"><%=org.to_currency_html(org.revenue_30_days)%></td></tr>
+			<tr><td>All Time Total Revenue</td><td class="text-right"><%=org.to_currency_html(org.revenue_all_time)%></td></tr>
+		<table>
+	</div>
+</div>
+
+<% end %>
+
+<div class="row" style="margin-top:30px;">
+	<div class="col-md-12">
+		<table class='table table-striped'>
+			<tr>
+				<th>Date</th>
+				<th>Key</th>
+				<th>Is Opened?</th>
+				<th>Is Clicked?</th>
+				<th>Is Spam?</th>
+				<th>Is Bounced?</th>
+			</tr>
+			
+			<% @user.user_contact_events.each do |contact| %>
+			<tr>
+				<td><%= pretty_dt(contact.created_at)  %></td>
+				<td><%= contact.message_key %></td>
+				<td class="<% if contact.is_opened %>bg-success<% end %>"><%= contact.is_opened %></td>
+				<td><%= contact.is_clicked %></td>
+				<td class="<% if contact.is_spam %>bg-danger <% end %>"><%= contact.is_spam %></td>
+				<td><%= contact.is_bounced %></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>	
+</div>
+
+<% tracking = @user.recent_activity %>
+<%= render partial: 'traffic_results', locals: {events: tracking[:events], pageviews: tracking[:pageviews], start_dt: 1.day.ago, end_dt: Time.now} %>

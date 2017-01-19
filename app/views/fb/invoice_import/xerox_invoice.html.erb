@@ -1,0 +1,76 @@
+<div class="row">
+<div class="col-md-12">
+	<div class="forms-header">
+	<h1>Upload Invoices</h1>
+	</div>
+	Upload your invoice file here<br/>
+	Confused?  No problem, <a href="mailto:support@retentionfactory.com">ask support at support@retentionfactory.com</a>
+	<%= form_tag '/fb/invoice_import/xerox_upload', :multipart=>true do |f|%>
+		<%= file_field_tag :export_file%><br/>
+		<%= submit_tag 'Upload', :class=>'btn'%><br/>
+	<% end %>
+</div>
+</div>
+
+<% if @copiers.length > 0 %>
+<div class="row">
+<div id="sales-performance" class="graphs-div col-md-12">
+<% content_for :javascript_includes do %>
+  <script src="https://s3.amazonaws.com/fv-assets/flot/jquery.flot.patched-multi.js"></script>
+<% end %>	
+	<%= render 'sales_performance'%>
+</div>
+</div>
+<%end%>
+
+<div class="row">
+<div id="existing-copiers" class="tabular-div">
+	<% if @copiers.length > 0 %>
+	<div class="tabular-header">
+	<h1>Existing Copiers</h1>
+	</div>
+	<table class="table table-striped" id="copiers-table">
+		<tr class="tabular-table-header-row" style="text-align: right;">
+			<th>Printer</th>
+			<th>Base</th>
+			<th>Tax</th>
+			<th>Mono</th>
+			<th>Color</th>
+			<th>Mono/Color</th>
+			<th>Color 2</th>
+			<th>Color 3</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<% @copiers.each do |copier|%>
+			<tr class="tabular-table-content-row">
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.fb_client.name%> <%= copier.model %> <%= copier.serial_number%></td>
+				<td class="tabular-currency tabular-fixed-small"><%= copier.base_rate%></td>
+				<td class="tabular-currency tabular-fixed-small"><%= copier.tax_name%></td>
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.mono_base%> / <%= number_to_currency(copier.mono_overage) %></td>
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.color_0_base%> / <%= number_to_currency(copier.color_0_overage) %></td>
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.mono_color_1_base%> / <%= number_to_currency(copier.mono_color_1_overage) %></td>
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.color_level_2_base%> / <%= number_to_currency(copier.color_level_2_overage) %></td>
+				<td class="tabular-currency tabular-fixed-medium"><%= copier.color_level_3_base%> / <%= number_to_currency(copier.color_level_3_overage) %></td>
+				<td class="action-button"><%= edit_link copier, "/fb/invoice_import/copier/#{copier.id}/edit"%></td>
+				<td class="action-button"><%= remove_link copier, "/fb/invoice_import/copier/#{copier.id}"%></td>
+			</tr>
+		<% end %>		
+	</table>
+	<% else %>
+	<div class="tabular-header">
+	<h1>Instructions</h1>
+	</div>
+	<p>
+		Looks like you're new here.  Don't worry, we'll get you set up right away.  Here's what's going to happen:
+		<ol>
+			<li>First, upload the spreadsheet you got from Xerox using the buttons above (Not yet!  Read the next two steps first).</li>
+			<li>The next page will ask you to set up the copiers in your inventory and the markup you want associated with them.  This only has to be done once and then you're set for life.</li>
+			<li>Once you've set up your copiers, try uploading your spreadsheet again.</li>
+			<li>The second time through, you'll see the copy counts from your spreadsheet.  If you're happy with them, click the 'Confirm' button.</li>
+			<li>After you're clicked 'Confirm', jump over to FreshBooks, see your invoices, and send them to your clients.</li>
+		</ol>
+	</p>
+	<%end%>
+</div>
+</div>

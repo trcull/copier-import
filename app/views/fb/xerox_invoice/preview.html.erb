@@ -1,0 +1,38 @@
+<% content_for :stylesheet_includes do %>
+  <%= stylesheet_link_tag "xerox_invoice/preview.css" %>
+<% end %>
+<script>
+  $(document).ready(function() {
+     var url = $("#demo-form").attr('action'); 
+     $("#demo").colorbox({href: url, iframe:true, innerWidth:560, innerHeight:315});
+  });
+
+</script>
+
+
+
+
+<div class="import_expenses">
+  <h1>Automate Invoices. Get Back to Sales.</h1>
+  <p><a href="http://www.xerox.com/Static_HTML/partner_gateway/html/en_CA/authorized_dealers.html">Xerox dealers</a>: convert your Xerox itemized spreadsheet to <a href="http://www.freshbooks.com" target="_blank">FreshBooks invoices</a> with a few clicks each month.</p>
+  <div style="white-space: nowrap;">
+  <%= image_tag("xerox_invoice/xeroxspreadsheet.png")%> <%= image_tag("icons/fast_forward.png", :id => "fast_forward") %> <%= image_tag("xerox_invoice/freshbooksinvoice.png") %>
+  </div>
+  <form id="demo-form" action="http://www.youtube.com/embed/SZbuOnsO3ao?rel=0&wmode=transparent"><button id="demo" type="submit">Show Me</button></form>
+  <a href="#ask-for-login" id="sign-me-up" class="btn cboxElement">Sign Me Up</a>
+	
+  <ul style="width:500px;">
+    <li>Reduce billing errors</li>
+    <li>Reduce billing time from hours to <em>two minutes</em> per month</li>
+    <li>Professional-looking invoices without fuss</li>
+    <li>Requires a subscription to <a href="http://www.freshbooks.com" target="_blank">FreshBooks</a> (not included)</li>
+    <li>All this for only $40/month (plus FreshBooks subscription)</li>
+  </ul>
+  
+  <p>
+  	Questions?  Ask us at <a href="mailto:support@featureviz.com">support@featureviz.com</a>
+  </p>
+</div>
+
+<% feature = Feature.where(:key=>'xerox_invoice').first %>
+<%= render :partial=>'account/plans/ask_for_login', :locals=>{:required_points=>feature.points, :feature_id=>feature.id, :feature_url=>'/fb/xerox_invoice'}%>

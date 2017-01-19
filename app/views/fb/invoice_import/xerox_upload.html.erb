@@ -1,0 +1,123 @@
+<style>
+.xerox-fixed-medium {
+	width: 35px;
+}
+.xerox-fixed-medium input {
+	width: 35px;
+}
+</style>
+
+<%if @missing_serial_numbers.length > 0 %>
+<script type="text/javascript">
+function save_success(result){
+	$("#add-copier-row-" + result['serial_number']).remove();
+	$('.next-cell').first().focus();
+}
+
+function save_fail() {
+	alert("sorry, saving failed.  Please try again");
+}
+</script>
+<div class="tabular-div">
+	<div class="tabular-header">
+	<h1>Missing Copiers</h1>
+	</div>
+	
+	Your spreadsheet contains some copiers that haven't been set up yet.  Below are the serial numbers, please make sure to set them up and then push "Try Again" to reupload your spreadsheet
+	<div class="tabular-table-div">
+	<table class="tabular-table">
+		<thead>
+			<tr class="tabular-table-header-row" style="text-align: right;">
+				<th>Serial/Grouping</th>
+				<th>Sales Code</th>
+				<th>Client</th>
+				<th>Tax</th>
+				<th>Base<br/>Rate ($)</th>
+				<th>Mono<br/>Base (ct.)</th>
+				<th>Mono<br/> Over ($)</th>
+				<th>Color<br/>Base (ct.)</th>
+				<th>Color<br/>Over ($)</th>
+				<th>Mono/Color<br/>Base (ct.)</th>
+				<th>Mono/Color<br/>Over ($)</th>
+				<th>Color 2<br/>Base (ct.)</th>
+				<th>Color 2<br/>Over ($)</th>
+				<th>Color 3<br/>Base (ct.)</th>
+				<th>Color 3<br/>Over ($)</th>
+				<%= action_headers%>
+			</tr>
+		</thead>
+		
+	<% @missing_serial_numbers.each do |serial|%>
+	<% row = @rows_by_serial_number[serial]
+		make = row[@columns[:make]]
+		model = row[@columns[:model]]
+		%>
+			<tr id="add-copier-row-<%=serial%>" class="add-copier-row tabular-table-content-row">
+		<%= form_tag '/fb/invoice_import/add_copier',:remote=>true, :serial=>serial,:id=>"add-copier-form-#{serial}", :class=>'add-copier-form' do |f|%>
+				<td class="tabular-expanding"><%= hidden_field_tag 'copier[make]', 'Xerox'%><%=model%><%= hidden_field_tag 'copier[model]', model%> <%= serial%><%= hidden_field_tag 'copier[serial_number]', serial%>
+					
+					<%= text_field_tag 'copier[grouping]', row[@columns[:city]]%>
+				</td>
+				<td class="tabular-fixed-medium"><%= text_field_tag 'copier[sales_tracking_code]', 'default'%></td>
+				<td class="tabular-fixed-medium"><%= select_tag(:client_id, options_from_collection_for_select(@clients, "id", "name"), :class=>'next-cell')%></td>
+				<td class="tabular-fixed-small"><%= select_tag('copier[tax_name]', options_for_select([''].concat(@tax_rates.collect{|tax| tax["name"]}), ''))%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[base_rate]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[mono_base]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[mono_overage]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_0_base]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_0_overage]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[mono_color_1_base]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[mono_color_1_overage]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_level_2_base]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_level_2_overage]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_level_3_base]', '0'%></td>
+				<td class="tabular-currency xerox-fixed-medium"><%= text_field_tag 'copier[color_level_3_overage]', '0'%></td>
+				<td class="tabular-button tabular-fixed-medium"><%= ajax_button "Save", "Saving...", "save-button-#{serial}"%></td>
+		<% end %>
+			</tr>
+		<%= ajax_json_button_binding("add-copier-form-#{serial}", 'save_success','save_fail')%>
+	<% end %>
+	</table>
+	</div>
+</div>
+<% end %>
+
+
+<div class="tabular-div">
+	
+	<% if @missing_serial_numbers.length < 1 %>
+		
+		<div class="tabular-header">
+		<h1>Preview</h1>
+		</div>
+		This is what we found in your spreadsheet.  If you're happy with the results, click "Confirm" and we'll send the invoices to FreshBooks    
+		<p/>	
+		 	
+		<%= form_tag '/fb/invoice_import/xerox_confirm' do |f|%>
+			<%= submit_tag "Confirm", :class=>'btn', :style=>'float:left;margin-bottom:20px;'%><span style="font-size:10px;margin-left:10px;">... or, <%= link_to "try again", "/fb/xerox_invoice", :style=>'font-size:10px;margin-bottom:-10px;'%></span>
+		<%end%>
+		<p/>
+		<p/>
+		<div class="tabular-table-div">
+			<table class="tabular-table">
+			<% @sheet_arr.each do |row|%>
+					<tr class="tabular-table-content-row">
+						<td class="tabular-fixed-medium"><%=row[@columns[:model]]%> <%= row[@columns[:serial_num]]%></td>
+						<td class="tabular-currency tabular-fixed-medium"><%= row[@columns[:mono_usage]]%> ct.</td>
+						<td class="tabular-currency tabular-fixed-medium"><%= row[@columns[:color_usage]]%> ct.</td>
+						<td class="tabular-currency tabular-fixed-medium"><%= row[@columns[:mono_color_usage]]%> ct.</td>
+						<td class="tabular-currency tabular-fixed-medium"><%= row[@columns[:color_level_2_usage]]%> ct.</td>
+						<td class="tabular-currency tabular-fixed-medium"><%= row[@columns[:color_level_3_usage]]%> ct.</td>
+					</tr>
+			<% end %>
+			</table>
+		</div>
+
+	<% else %>
+		Once you have added the missing copiers above, please 		<%= button_to "Try Again", "/fb/xerox_invoice", :class=>'btn'%>
+	 to upload your spreadsheet again.  
+	<% end %>
+
+	
+</div>
+

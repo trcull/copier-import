@@ -1,0 +1,60 @@
+
+<table>
+	<tr><td style="width:180px;">
+<%= label_tag 'fb_client_id','Client'%></td><td>
+<%= select_tag('copier[fb_client_id]', options_from_collection_for_select(@clients, "id", "name", @copier.fb_client_id)) %>
+</td></tr>
+	<tr><td style="width:180px;">
+<%= label_tag 'tax_name','Tax'%></td><td>
+<%= select_tag('copier[tax_name]', options_for_select([''].concat(@tax_rates.collect{|tax| tax["name"]}), @copier.tax_name)) %> <%=@copier.tax_rate%>
+</td></tr>
+	<tr><td>
+<%= label_tag 'copier[serial_number]','Serial Number'%></td><td>
+<%= text_field_tag 'copier[serial_number]', @copier.serial_number%></td></tr>
+	<tr><td>
+<%= label_tag 'copier[make]','Make'%></td><td>
+<%= text_field_tag 'copier[make]', @copier.make%></td></tr>
+	<tr><td>
+<%= label_tag 'copier[model]','Model'%></td><td>
+<%= text_field_tag 'copier[model]', @copier.model%></td></tr>
+	<tr><td>
+<%= label_tag 'copier[grouping]','Group'%></td><td>
+<%= text_field_tag 'copier[grouping]', @copier.grouping%></td></tr>
+	<tr><td>		
+<%= label_tag 'copier[sales_tracking_code]','Tracking Code'%></td><td>
+<%= text_field_tag 'copier[sales_tracking_code]', @copier.sales_tracking_code%></td></tr>
+	<tr><td>		
+<%= label_tag 'copier[base_rate]','Base Rate'%></td><td>
+$<%= text_field_tag 'copier[base_rate]', @copier.base_rate%> / month</td></tr>
+	<tr><td>
+<%= label_tag 'copier[mono_base]','Mono Base'%></td><td>
+<%= text_field_tag 'copier[mono_base]',@copier.mono_base%> ct.</td></tr>
+	<tr><td>
+<%= label_tag 'copier[mono_overage]','Mono Overage'%></td><td style="width:75%">
+$<%= text_field_tag 'copier[mono_overage]',@copier.mono_overage%> each</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_0_base]','Color Base'%></td><td>
+<%= text_field_tag 'copier[color_0_base]',@copier.color_0_base%> ct.</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_0_overage]','Color Overage'%></td><td>
+$<%= text_field_tag 'copier[color_0_overage]',@copier.color_0_overage%> each</td></tr>
+	<tr><td>
+<%= label_tag 'copier[mono_color_1_base]','Mono Color 1 Base'%></td><td>
+<%= text_field_tag 'copier[mono_color_1_base]',@copier.mono_color_1_base%> ct.</td></tr>
+	<tr><td>
+<%= label_tag 'copier[mono_color_1_overage]','Mono Color 1 Overage'%></td><td>
+$<%= text_field_tag 'copier[mono_color_1_overage]',@copier.mono_color_1_overage%> each</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_level_2_base]','Color Level 2 Base'%></td><td>
+<%= text_field_tag 'copier[color_level_2_base]',@copier.color_level_2_base%> ct.</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_level_2_overage]','Color Level 2 Overage'%></td><td>
+$<%= text_field_tag 'copier[color_level_2_overage]',@copier.color_level_2_overage%> each</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_level_3_base]','Color Level 3 Base'%></td><td>
+<%= text_field_tag 'copier[color_level_3_base]',@copier.color_level_3_base%> ct.</td></tr>
+	<tr><td>
+<%= label_tag 'copier[color_level_3_overage]','Color Level 3 Overage'%></td><td>
+$<%= text_field_tag 'copier[color_level_3_overage]',@copier.color_level_3_overage%> each</td></tr>
+</table>
+<%= submit_tag 'Save', :class=>'btn'%><br/>

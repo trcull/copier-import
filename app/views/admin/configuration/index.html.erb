@@ -1,0 +1,13 @@
+
+<div class="row">
+	<div class="col-md-3">
+		<%= form_tag'/admin/panic'  do %>
+			<%= submit_tag 'PANIC!', :class=>'form-control btn btn-danger' %>
+		<% end %>
+		<div style="margin-top:60px;">
+		<%= form_tag'/admin/stand_down'  do %>
+			<%= submit_tag 'Stand Down', :class=>'form-control btn btn-success' %>
+		<% end %>
+		</div>
+	</div>
+</div>

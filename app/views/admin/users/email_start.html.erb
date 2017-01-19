@@ -1,0 +1,65 @@
+<% content_for :javascript_includes  do %>
+<script src="https://s3.amazonaws.com/fv-assets/ckeditor/ckeditor.js"></script>
+<script src="https://s3.amazonaws.com/fv-assets/angular/angular.min.js"></script>
+    <%= javascript_include_tag "email_users" %>
+<% end %>
+
+<div id="emailUsersDivId" ng-app="App" ng-controller="EmailUsersCtrl" ng-init="init()">
+<div class="row">
+	<div class="col-md-1">
+			Subject:
+	</div>
+	<div class="col-md-11">
+			<input class="form-control" type="text" ng-model="subject"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-1">
+			Body:
+	</div>
+	<div class="col-md-11">
+			<textarea class="form-control" id="html_source"></textarea>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-1">
+			To:
+	</div>
+	<div class="col-md-11 email-list">
+		<table>
+			<tr>
+				<td>Selected</td>
+				<td>Email</td>
+				<td>Needs to Pay</td>
+				<td>Disabled</td>
+			</tr>
+			<tr ng-repeat="user in allUsers">
+				<td><input value="{{user.email}}" name="selectedEmails[]" ng-model="user.selected" type="checkbox" data-needtopay="needs_to_pay" data-isdisabled="is_disabled"></td>
+				<td>{{user.email}}/{{user.org_name}}</td>
+				<td>{{user.needs_to_pay}}/{{user.plan_bucket}}</td>
+				<td>{{user.is_disabled}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-11">
+	</div>
+	<div class="col-md-1">
+		<a ng-click="send()" class="btn btn-primary btn-default">Send</a>
+	</div>
+</div>
+
+
+
+
+
+</div>
+
+<style>
+.email-list {
+	max-height: 300px;
+	overflow: scroll;
+}
+</style>

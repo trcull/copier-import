@@ -1,0 +1,116 @@
+<% free_plan = @plans.select{|i| i.group == Plan::GROUP_FREE_PLAN}.first
+   paid_plans = @plans.select {|plan| plan.group == Plan::GROUP_PAID_PLAN}
+   if current_user.present?
+	   sponsored_plans = @plans.select {|plan| current_user.plans.include?(plan) && plan.group == Plan::GROUP_SPONSORED_PLAN}
+   else
+   	sponsored_plans = []
+   end 
+   plan_width = ((12/(paid_plans.length == 0 ? 1 : paid_plans.length)));%>
+<div class="plans">
+<!--<div class="row">
+  <div class="col-md-12 plans-header">
+    <h4>Increase Your Revenue in 30 Days or Your Money Back</h4>
+    <p>Pay as you go. No long-term contracts. Cancel anytime.</p>
+  </div>
+</div>-->
+<div class="row">
+  <% if !sponsored_plans.empty? %>
+  <h4>Subscription Plans</h4>
+  <% end %>
+</div>
+  <div class="row plans-list">
+    <% paid_plans.each do |plan| %>
+      <div class="plan col-md-<%= plan_width %>">
+        <div class="plan-wrp">
+	  <h2 class="title"><%= plan.name %></h2>
+          <ul>
+            <li class="price">
+              <span><%= number_to_currency(plan.price)%></span>
+              <div>per month</div>
+            </li>
+            <li class="action">
+	  <% if current_user.present? && !current_user.plans.include?(plan) %>
+	    <%= button_tag("Sign Up", :onClick=>"trackEvent('Recurly','Select Plan', #{plan.price} );window.location.href ='#{plan.payment_provider_url}/#{current_user.payment_provider_id}'", :class=>'btn btn-lg btn-block btn-primary btn-signup')%>
+		<% elsif current_user.nil? %>
+			<%= button_tag("Create Account", 'data-toggle'=>'modal','data-target'=>'#try-it-popup', :class=>'btn btn-lg btn-block btn-primary btn-signup')%>
+		<% else %>
+			Your Current Plan
+		<% end %></li>
+            <li>Up to <strong><%= number_with_delimiter(plan.points) %></strong> orders per 30 days</li>
+ 	    <li class="plan-teaser"><%= plan.teaser %></li>
+            <li class="plan-description"><%= plan.description %></li>
+          </ul>
+        </div>
+      </div>
+   <% end %>
+  </div>
+
+<% if current_user.nil? || (current_user.plans.empty? && free_plan.present?) %>
+<div class="row">
+<div class="plan-free col-md-12">
+    <p>Or...try the FREE Plan - up to <%=number_with_delimiter(free_plan.points)%> orders/month.  Perfect if you're just getting started. 
+		<% if current_user.present? %>
+    	<a onclick="trackEvent('Recurly','Select Plan',0);" href="<%="#{free_plan.payment_provider_url}/#{current_user.payment_provider_id}"%>">Sign up now →</a>
+		<% else %>
+    	<a data-toggle="modal" data-target="#try-it-popup">Create Account →</a>
+		<% end %>
+    </p>
+</div>
+</div>
+<% end %>
+<div class="row feature-included-list">
+    <h3>All Plans Include</h3>
+        <div class="col-md-4">
+        	<ul>
+            <li>Current and Historical Repurchase Rates</li>
+            <li>Recent Repeat Purchases</li>
+            <li>Common Purchase Sequences</li>
+	        </ul>
+	    </div>
+        <div class="col-md-4">
+        <ul>
+            <li>Automatic Aged Account Messages</li>
+            <li>Customer Message Tracking</li>
+            <li>ROI Calculation</li>
+        </ul>
+	    </div>
+        <div class="col-md-4">
+        <ul>
+            <li>Customer Support via Email</li>
+            <li>No Setup Fees, Upgrade Fees or Contracts</li>
+            <li>First Month Money Back Guarantee</li>
+        </ul>
+	    </div>
+    </div>
+</div>
+</div>
+
+<div id="try-it-popup" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Which Platform Do You Use?</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-bottom:15px;">
+        	<div class="col-md-12">
+				<a href="https://apps.shopify.com/retention-factory" class="btn btn-lg btn-block btn-primary btn-signup">Shopify</a>        		
+        	</div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12">
+				<a href="/users/sign_up" class="btn btn-lg btn-block btn-primary btn-signup">Other</a>
+				        		
+        	</div>
+        </div>
+        <div class="row" id="sorry-not-available">
+        	<div class="col-md-12">
+        		Sorry, Retention Factory is only available for Shopify right now.  But very soon we'll have it launched everywhere.  Please check back in a few weeks.
+        	</div>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

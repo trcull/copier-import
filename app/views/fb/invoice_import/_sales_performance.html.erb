@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="graphs-header col-md-12">
+	<h1>Sales Performance</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+	Revenue broken down by sales tracking code
+	</div>
+</div>
+
+<%= form_tag('/fb/invoice_import/sales_by_date', :remote=>true, :id=> 'sales-form', :method=>:get)  do %>
+<div class="row">
+	<div class="col-md-2">
+<input class="form-control" type="text" id="from-date-picker" size="11" name="from_date" value="<%=(DateTime.now - 90).strftime("%Y-%m-%d")%>"/>
+	</div><div class="col-md-1 text-center">
+		to
+	</div><div class="col-md-2">
+<input class="form-control"  type="text" id="to-date-picker" size="11" name="to_date" value="<%=(DateTime.now. + 1).strftime("%Y-%m-%d")%>"/>
+	</div><div class="col-md-1">
+<%= search_button %>
+	</div><div class="col-md-2">
+(<a style="color:blue;font-size:0.8em;text-decoration:underline;margin-left:5px;margin-right:5px;" id="as_csv_link" href="/fb/invoice_import/sales_by_date.csv?utf8=%E2%9C%93&from_date=<%=(DateTime.now - 90).strftime("%Y-%m-%d")%>&to_date=<%=(DateTime.now. + 1).strftime("%Y-%m-%d")%>" target="new">as CSV</a>)
+</div>
+</div>
+<% end %>
+
+
+<div class="row">
+	<div class="col-md-12">
+<div id="flot-placeholder" style="width:600p;height:300px;padding:0px;margin-top:20px;">
+	
+</div>
+	</div>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+//TODO: extract this into a component
+convert_timestamps = function(item){ return [(new Date(item[0]).getTime()),item[1]]}
+draw_graph = function (div, data) {
+	update_csv_link();
+	for (var i=0; i< data.length; i++){
+		data[i]['data'] = data[i]['data'].map(convert_timestamps);
+	}
+    $.plot($(div), 
+    	data,
+    	{
+    		series: { stack: true,
+    		bars: {
+				show:true,
+				barWidth: 60*60*1000*24*25, //25 days
+				align: 'center'
+			}},
+    		xaxis: {
+      			mode: "time",
+      			minTickSize: [1, "month"],
+      			timeformat: "%y-%m"
+  			},
+			yaxis: {tickFormatter: function numberWithCommas(x) {
+                return "$"+ x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+            }}
+  		});
+};
+update_csv_link = function(){
+	new_link = "/fb/invoice_import/sales_by_date.csv?from_date=" + $("#from-date-picker").val() + "&to_date=" + $("#to-date-picker").val(); 	
+	$("#as_csv_link").attr("href", new_link);
+};
+
+$(document).ready(function() {
+	$("#sales-form").bind("ajax:success", function(evt,data,status, xhr){
+		data = $.parseJSON(xhr.responseText)
+		draw_graph("#flot-placeholder",data);
+	});
+	$("#sales-form").bind("ajax:failure", function(xhr, status, error){
+		alert("Could not fetch data: " + error);
+	});
+	$.ajax({
+		url: "/fb/invoice_import/sales_by_date?from_date=<%=(DateTime.now - 90).strftime("%Y-%m-%d")%>&to_date=<%=(DateTime.now + 1).strftime("%Y-%m-%d")%>",
+		dataType: "json",
+		error: function() {alert("Failed to fetch sales graph")},
+		success: function(data, textStatus, jqXHR){
+			draw_graph("#flot-placeholder", data);
+		}
+	});
+});
+
+$(document).ready(function(){
+	$("#from-date-picker").datepicker({dateFormat:"yy-mm-dd"});
+	$("#to-date-picker").datepicker({dateFormat:"yy-mm-dd"});
+});
+</script>

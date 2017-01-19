@@ -1,0 +1,46 @@
+<div id="graphs" class="graphs-div">
+
+<div id="wait-placeholder" class="wait-placeholder-div">
+	<span style="font=size:1.8em">Loading data...</span>
+</div>
+
+
+<div id="graph-placeholder" class="graph-placeholder-div">
+	
+</div>
+<div id="graph-controls" class="graph-controls-div">
+	<input class="btn" type="submit" id="reset-zoom-button" value="Reset Zoom"/>
+</div>
+
+<script type="application/javascript">
+
+
+$(document).ready(function() {
+	//$.jqplot.config.enablePlugins = true;
+	$.ajax({
+		url: "<%=data_url%>",
+		dataType: "json",
+		error: function() {alert("Failed to fetch graph")},
+		success: function(data, textStatus, jqXHR){
+			$('#wait-placeholder').hide();
+			<%=success_function_name%>("graph-placeholder", data);
+		}
+	});
+	$('#reset-zoom-button').click(function() {theGraph.resetZoom()});
+});
+
+</script>
+
+</div>
+
+
+<% content_for :javascript_includes do %>
+  <script type="application/javascript" src="https://s3.amazonaws.com/fv-assets/jqplot/jquery.jqplot.js"></script>
+  <script type="application/javascript" src="https://s3.amazonaws.com/fv-assets/jqplot/plugins/jqplot.cursor.js"></script>
+  <script type="application/javascript" src="https://s3.amazonaws.com/fv-assets/jqplot/plugins/jqplot.barRenderer.js"></script>
+  <script type="application/javascript" src="https://s3.amazonaws.com/fv-assets/jqplot/plugins/jqplot.highlighter.js"></script>
+
+<% end %>	
+<% content_for :stylesheet_includes do %>
+  <link href="https://s3.amazonaws.com/fv-assets/jqplot/jquery.jqplot.css" rel="stylesheet"></script>
+<% end %>	

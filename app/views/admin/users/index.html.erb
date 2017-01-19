@@ -1,0 +1,101 @@
+<div class="row">
+<h3>Users</h3>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+		Total: <%= @users.reduce(0) do |so_far, u| 
+			if u.email != 'trcull@pollen.io'
+				so_far + 1
+			else
+				so_far
+			end
+		end %>
+	</div>	
+	<div class="col-md-3">
+		Installed: <%= @users.reduce(0) do |so_far, u| 
+			if u.is_installed?
+				so_far + 1
+			else
+				so_far
+			end
+		end %>
+	</div>	
+	<div class="col-md-3">
+		Active: <%= @users.reduce(0) do |so_far, u| 
+			if u.is_active?
+				so_far + 1
+			else
+				so_far
+			end
+		end %>
+	</div>	
+	<div class="col-md-3">
+		Total Won: <%= @users.reduce(0) do |so_far, u|
+			org = u.organizations.first 
+			if org 
+				so_far + org.revenue_from_contacts_all_time
+			else
+				so_far
+			end
+		end %>
+	</div>	
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+	<table class="table table-hover table-condensed">
+		<tr>
+			<th>Name</th><th>Created At</th><th>Plan</th><th>Needs To Pay?</th><th>Org</th><th class="text-right">Orders</th><th class="text-right">Won Rev</th>
+		</tr>
+<tr>
+	<td colspan="7">ACTIVE...</td>
+</tr>
+<% @users.each do |u|%>
+	<% org = u.organizations.first%>
+	<% if u.is_active? %>
+	<tr>
+		<td><a href="/admin/users/<%=u.id%>/edit"><%=u.to_log%></a></td>
+		<td><%= u.created_at.strftime("%Y-%m-%d")%></td>
+		<td><%= u.plan_names%></td>
+		<td><%= u.needs_to_pay %></td>
+		<% if org %>
+		<td>(<%= link_to "be", "/organization/#{org.id}/select", :remote=>true, :class=>'org_select_link' %>) 
+			(<%= link_to "from", "/admin/traffic?start_dt=#{(org.created_at - 1.day).strftime('%Y-%m-%d')}&end_dt=#{(org.created_at + 1.day).strftime('%Y-%m-%d')}", :class=>'org_select_link' %>)
+			<%=org.to_log%></td>
+		<td class="text-right"><%=org.num(org.num_orders)%></td>
+		<td class="text-right"><%=org.to_currency_html(org.revenue_from_contacts_all_time)%></td>
+		<% else %>
+		<td>ORG IS NIL!</td>
+		<% end %>
+	</tr>
+	<% end %>
+<%end%>
+<tr>
+	<td colspan="7">INACTIVE...</td>
+</tr>
+<% @users.each do |u|%>
+	<% org = u.organizations.first%>
+	<% if !u.is_active? %>
+	<tr>
+		<td><a href="/admin/users/<%=u.id%>/edit"><%=u.to_log%></a></td>
+		<td><%= u.created_at.strftime("%Y-%m-%d")%></td>
+		<td><%= u.plan_names%></td>
+		<td><%= u.needs_to_pay %></td>
+		<% if org %>
+		<td>(<%= link_to "be", "/organization/#{org.id}/select", :remote=>true, :class=>'org_select_link' %>) 
+			(<%= link_to "from", "/admin/traffic?start_dt=#{(org.created_at - 1.day).strftime('%Y-%m-%d')}&end_dt=#{(org.created_at + 1.day).strftime('%Y-%m-%d')}", :class=>'org_select_link' %>)
+			<%=org.to_log%></td>
+		<td class="text-right"><%=org.num(org.num_orders)%></td>
+		<td class="text-right"><%=org.to_currency_html(org.revenue_from_contacts_all_time)%></td>
+		<% else %>
+		<td>ORG IS NIL!</td>
+		<% end %>
+	</tr>
+	<% end %>
+<%end%>
+
+
+</table>
+</div>
+</div>

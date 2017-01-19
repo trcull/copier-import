@@ -1,0 +1,104 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+/* from https://gist.github.com/t2/1464315 and http://stackoverflow.com/questions/5267998/rails-3-field-with-errors-wrapper-changes-the-page-appearance-how-to-avoid-t and http://stackoverflow.com/questions/12252286/how-to-change-the-default-rails-error-div-field-with-errors */
+form .clearfix:before, form .clearfix:after {
+  display: inline;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+	width: 100%;
+}
+
+#try-it-popup {
+	display: none;
+}
+
+#sorry-not-available {
+	display: none;
+}
+
+.url-table-cell span, .url-table-cell {
+	max-width: 100px;
+	word-wrap:break-word;
+	overflow: scroll;
+}
+
+.url-table-cell span {
+	font-size: 0.7em;	
+}
+
+.notused {
+	
+}
+
+.content-row {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.headline-row h3 {
+	display:inline-block;
+}
+
+.headline-row a {
+	display:inline;
+	margin-left:10px;
+}
+
+td,th {
+	padding-right: 10px;
+}
+
+.icon-image {
+	width:auto;
+	height:auto;
+	padding-bottom:10px;
+	display:block;
+	margin:0 auto;
+	text-align:center;
+}
+.icon-image-large {
+	font-size: 70px;
+	line-height: 0px;
+}
+
+.explanation {
+	display:none;
+}
+
+.whatisthis {
+	
+}
+
+.step1 {
+	
+}
+
+.step2 {
+	display:none;
+}
+
+.step3 {
+	display:none;
+}
+
+.step4 {
+	display:none;
+}
+
+.step5 {
+	display:none;
+}
+

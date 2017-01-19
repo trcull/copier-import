@@ -1,0 +1,8 @@
+<div >
+	<div class="forms-header">
+	<h1>Edit Copier</h1>
+	</div>
+	<%= form_tag "/fb/invoice_import/copier/#{@copier.id}", :id=>'add-copier-form', :method=>:post do |f| %>
+		<%= render 'copier_form'%>
+	<% end %>
+</div>

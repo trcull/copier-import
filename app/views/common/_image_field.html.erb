@@ -1,0 +1,38 @@
+
+<div class="row image-input-field-row" id="<%= field_name %>-image-input-field-row">
+	<div class="col-md-10">
+		<div class="form-group">
+	<%= f.text_field field_name, {'placeholder'=>'Copy Paste Full URL Here, eg: http://www.pic.com/image.jpg','class'=>'form-control image-input-field', 'id'=>field_name.to_s+'-image-field'}.merge(html_options) %>
+	</div>
+	</div>
+	<div class="col-md-2">
+		<a class="form-control btn btn-default" onclick="imageChangeClicked('<%= field_name %>');return false;">Change...</a>
+	</div>
+</div>
+
+<div class="row image-button-row" id="<%= field_name %>-image-button-row">
+	<div class="col-md-3">
+		<a class="form-control btn btn-default" onclick="imageUploadClicked('<%= field_name %>');return false;">Upload Image</a>	
+	</div>
+	<div class="col-md-3">
+		<a class="form-control btn btn-default" onclick="imageSpecifyClicked('<%= field_name %>');return false;">Specify Image URL</a>	
+	</div>
+	<div class="col-md-3">
+		<a class="form-control btn btn-default" onclick="imageDontUseClicked('<%= field_name %>'); return false;">Don't Use An Image</a>	
+	</div>
+</div>
+
+<div class="row image-upload-row" id="<%= field_name %>-image-upload-row">
+	<div class="col-md-12">
+		<p id="<%= field_name %>-image-upload-wait">Requesting upload token, please wait...
+			(<a href="#" onclick="imageUploadCancelClicked('<%= field_name %>'); return false;">cancel</a>)</p>
+		<p id="<%= field_name %>-image-upload-start">Uploading image now, please wait...</p>
+			
+		<input type="file" id="<%= field_name %>-image-upload-file" name="<%= field_name %>-image-upload-file" ></input>
+		
+	</div>
+</div>
+
+<script type="application/javascript">
+	registerImageUploadField('<%= field_name %>');
+</script>

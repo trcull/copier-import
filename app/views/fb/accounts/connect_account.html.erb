@@ -1,0 +1,25 @@
+
+<div class="detail-div">
+	<div class="detail-header">
+		<h1>Freshbooks Connect</h1>
+	</div>
+	<p>
+	Oops!  Looks like your haven't finished setting up your FreshBooks information.  We'll need you to do a couple things first before you can proceed:
+	<ol>
+		<li>Give us the name of your FreshBooks site</li>
+		<li>Authorize us on FreshBooks</li>
+	</ol>
+	</p>
+	<p>We'll take you through one step at a time.  First, please give us your site name below and then you'll be taken to FreshBooks to authorize us.
+	</p>
+	<p>Your FreshBooks site name is the first part of the URL you use.  For example, if you go to "http://happypuppies.freshbooks.com" then the site name you should enter below is "happypuppies".
+	</p>
+	<p>Don't have a FreshBooks account?  Please go to <a href="http://www.freshbooks.com" target="_blank">the FreshBooks site</a> and create one.  Then come back here when you're done.
+		</p>
+	<p>
+		<%= form_tag '/fb/accounts/connect_account' do |f|%>
+			http://<%= text_field_tag 'name', params[:name] %>.freshbooks.com
+			<%= submit_tag 'Save',:class=>'btn'%>
+		<% end %>
+		</p>
+</div>

@@ -1,0 +1,82 @@
+.marketing-image {
+	width: 100%;
+}
+
+.sign-in-form input, .choose-form .btn {
+	margin-bottom: 10px;
+}
+
+.tos {
+	font-size: 0.8em;	
+	display: inline;
+}
+
+.tos input {
+}
+
+.xfield_with_errors {
+color: #e74c3c;
+border-color: #e74c3c;
+-webkit-box-shadow: none;
+box-shadow: none;	
+}
+
+.sign-up-form input {
+	width: 100%;
+}
+
+#xerror_explanation h2 {
+	display: none;
+}
+
+#xerror_explanation ul {
+	font-size: 0.7em;
+	padding-left: 10px;	
+	color: #e74c3c
+}
+
+.sign-in-form, .sign-up-form {
+  padding-top: 40px;
+  display: none;
+}
+
+.choose-form {
+	padding-top: 10px;
+}
+
+.sign-up-form, .sign-in-form, .choose-form {
+  min-height: 460px;
+  height: 100%;
+  xtext-align: center;
+  background-color: #e2e2e2;
+  background-image: none;
+  background-origin: padding-box;
+  background-size: auto;
+  border-bottom-color: #F2F2F2;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: #F2F2F2;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-right-color: #F2F2F2;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-color: #F2F2F2;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-shadow: rgba(0, 0, 0, 0.246094) 0px 0px 3px 0px;
+  -webkit-background-clip: border-box;
+  -webkit-background-origin: padding-box;
+  -webkit-background-size: auto;
+  -webkit-border-image: none;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.246094) 0px 0px 3px 0px;
+  padding-bottom: 10px;
+  outline-color: #4F4D4D;
+  outline-style: none;
+  outline-width: 0px;
+  vertical-align: baseline;	
+}
